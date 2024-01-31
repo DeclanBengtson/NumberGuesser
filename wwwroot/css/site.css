@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+button {
+    padding: 10px 20px;
+    font-size: 22px;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+    /* Hover effect */
+button:hover {
+        background-color: #2980b9;
+    }
