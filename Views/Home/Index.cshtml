@@ -3,20 +3,18 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @{
+        ViewBag.Title = "Number Guesser Game";
+    }
+
+    <h2>@ViewBag.Message</h2>
+
+    @using (Html.BeginForm("MakeGuess", "Home", FormMethod.Post))
+    {
+        <label for="guess">Enter your guess: </label>
+        <input type="text" name="guess" />
+        <input type="submit" value="Submit" />
+    }
 </div>
 
-<!-- Views/Home/Index.cshtml -->
-@{
-    ViewBag.Title = "Number Guesser Game";
-}
 
-<h2>@ViewBag.Message</h2>
-
-@using (Html.BeginForm("MakeGuess", "Home", FormMethod.Post))
-{
-    <label for="guess">Enter your guess: </label>
-    <input type="text" name="guess" />
-    <input type="submit" value="Submit" />
-}
