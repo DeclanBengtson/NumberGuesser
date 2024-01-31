@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 namespace NumberGuesser.Controllers
 {
-    // HomeController.cs
     public class HomeController : Controller
     {
         private Game game;
@@ -14,30 +13,49 @@ namespace NumberGuesser.Controllers
             game = new Game();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(GuessModel model = null)
         {
-            // Initialize the game when the page is loaded
-            game.StartNewGame(1, 100);
-            ViewBag.Message = "Welcome to the Number Guesser game!";
-            return View();
+            ViewBag.Message = "Welcome to the Number Guesser game";
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult MakeGuess(int guess)
+        public ActionResult StartNewGame(int minRange, int maxRange)
         {
-            bool isCorrect = game.MakeGuess(guess);
+            // Validate input or handle errors as needed
+            if (minRange >= maxRange)
+            {
+                ViewBag.Message = "Invalid range. Please ensure that the min range is less than the max range.";
+                return View("Index");
+            }
+
+            game.StartNewGame(minRange, maxRange);
+            var model = new GuessModel { GuessFormVisible = true }; // Set to true to show the guess form
+            ViewBag.Message = $"New game started. Guess a number between {minRange} and {maxRange}.";
+            return View("Index", model);
+        }
+
+        [HttpPost]
+        public ActionResult MakeGuess(GuessModel model)
+        {
+            bool isCorrect = game.MakeGuess(model.Guess);
 
             if (isCorrect || game.IsGameOver())
             {
                 ViewBag.Message = $"Game Over. You guessed the correct number in {game.Attempts} attempts.";
+                // You might want to reset the game or perform other actions here
             }
             else
             {
                 ViewBag.Message = "Incorrect guess. Try again.";
+                model.GuessFormVisible = true; // Set to true to keep the guess form visible after an incorrect guess
             }
 
-            return View("Index");
+            return View("Index", model);
         }
+
     }
+
+
 
 }
